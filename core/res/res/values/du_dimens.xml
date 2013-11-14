@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/* Copyright 2012, The Android Open Source Project
+/* Copyright 2015, DIRTY UNICORNS Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -17,16 +17,14 @@
 -->
 <resources>
 
-  <!-- Package Manager -->
-  <java-symbol type="array" name="config_disabledComponents" />
-  <java-symbol type="array" name="config_forceEnabledComponents" />
+    <!-- EdgeGesture service: Distance a swipe must travel to be recognized as swipe. -->
+    <dimen name="edge_gesture_trigger_distance">12dp</dimen>
 
-  <!-- Vendor warning -->
-  <java-symbol type="string" name="system_error_vendorprint" />
+    <!-- EdgeGesture service: This is the distance a swipe can travel orthogonally to its actual swipe
+         direction to be still recognized as swipe. -->
+    <dimen name="edge_gesture_perpendicular_distance">15dp</dimen>
 
-  <!-- EdgeGesture service -->
-  <java-symbol type="dimen" name="edge_gesture_trigger_distance" />
-  <java-symbol type="dimen" name="edge_gesture_perpendicular_distance" />
-  <java-symbol type="dimen" name="edge_gesture_trigger_thickness" />
+    <!-- EdgeGesture service: Thickness of the active trigger fields around the screen border -->
+    <dimen name="edge_gesture_trigger_thickness">12dp</dimen>
 
 </resources>
