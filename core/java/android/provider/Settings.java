@@ -3636,7 +3636,7 @@ public final class Settings {
         */
        public static final String USB_DATA_AUTO_UNLOCK = "usb_data_auto_unlock";
 
-	/**
+	   /**
          * Whether the phone volume up / down effect should be played
          * @hide
          */
@@ -3656,7 +3656,8 @@ public final class Settings {
                 "wallpaper_open",  
                 "wallpaper_close",  
                 "wallpaper_intra_open",  
-                "wallpaper_intra_close",  
+                "wallpaper_intra_close",
+                "task_open_behind", 
         };  
         public static final String ANIMATION_CONTROLS_DURATION = "animation_controls_duration";
 
