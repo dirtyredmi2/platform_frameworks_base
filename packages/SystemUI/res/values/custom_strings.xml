@@ -46,4 +46,6 @@
     <string name="lockscreen_choose_action_title">Choose action</string>
     <string name="lockscreen_none_target">None</string>
 
+    <!-- Gesture Anywhere -->
+    <string name="gestures_message">Draw your gesture here</string>
 </resources>
