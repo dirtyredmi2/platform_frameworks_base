@@ -3692,6 +3692,18 @@ public final class Settings {
          * the setting value. See an example above.
          */
 
+	/**
+	 * Enable blocking wakelock
+	 * @hide
+	 */
+	public static final String WAKELOCK_BLOCKING_ENABLED = "wakelock_blocking_enabled";
+
+	/**
+	 * List of wakelock blocks selected
+	 * @hide
+	 */
+	public static final String WAKELOCK_BLOCKING_LIST = "wakelock_blocking_list";
+
         /**
          * Immersive recents options
          *
