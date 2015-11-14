@@ -173,7 +173,6 @@ public class InputManagerService extends IInputManager.Stub
 
     // State for the currently installed input filter.
     final Object mInputFilterLock = new Object();
-    IInputFilter mInputFilter; // guarded by mInputFilterLock
     ChainedInputFilterHost mInputFilterHost; // guarded by mInputFilterLock
     ArrayList<ChainedInputFilterHost> mInputFilterChain =
             new ArrayList<ChainedInputFilterHost>(); // guarded by mInputFilterLock
@@ -537,20 +536,10 @@ public class InputManagerService extends IInputManager.Stub
      */
     public void setInputFilter(IInputFilter filter) {
         synchronized (mInputFilterLock) {
-            final IInputFilter oldFilter = mInputFilter;
-            if (oldFilter == filter) {
-                return; // nothing to do
-            }
-
-            if (oldFilter != null) {
+            if (mInputFilterHost != null) {
                 mInputFilterHost.disconnectLocked();
                 mInputFilterChain.remove(mInputFilterHost);
                 mInputFilterHost = null;
-                try {
-                    oldFilter.uninstall();
-                } catch (RemoteException re) {
-                    /* ignore */
-                }
             }
 
             if (filter != null) {
@@ -603,6 +592,15 @@ public class InputManagerService extends IInputManager.Stub
 
             nativeSetInputFilterEnabled(mPtr, !mInputFilterChain.isEmpty());
         }
+    }
+
+    private int findInputFilterIndexLocked(IInputFilter filter) {
+        for (int i = 0; i < mInputFilterChain.size(); i++) {
+            if (mInputFilterChain.get(i).mInputFilter == filter) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private int findInputFilterIndexLocked(IInputFilter filter) {
