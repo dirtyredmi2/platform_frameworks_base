@@ -29,6 +29,10 @@
   <java-symbol type="dimen" name="edge_gesture_perpendicular_distance" />
   <java-symbol type="dimen" name="edge_gesture_trigger_thickness" />
 
+  <!-- Power menu Animations  -->
+  <java-symbol type="style" name="PowerMenuBottomAnimation" />
+  <java-symbol type="style" name="PowerMenuTopAnimation" />
+
   <!-- Reboot - Advanced Reboot -->
   <java-symbol type="string" name="reboot_confirm" />
   <java-symbol type="string" name="reboot_title" />
