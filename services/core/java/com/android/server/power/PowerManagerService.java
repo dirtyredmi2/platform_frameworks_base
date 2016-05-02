@@ -113,7 +113,7 @@ public final class PowerManagerService extends SystemService
     private static final int MSG_SCREEN_BRIGHTNESS_BOOST_TIMEOUT = 3;
 
     // Dirty bit: mWakeLocks changed
-    private static final int DIRTY_WAKE_LOCKS = 1 << 0;
+    protected static final int DIRTY_WAKE_LOCKS = 1 << 0;
     // Dirty bit: mWakefulness changed
     private static final int DIRTY_WAKEFULNESS = 1 << 1;
     // Dirty bit: user activity was poked or may have timed out
@@ -200,7 +200,7 @@ public final class PowerManagerService extends SystemService
 
     // A bitfield that indicates what parts of the power state have
     // changed and need to be recalculated.
-    private int mDirty;
+    protected int mDirty;
 
     // Indicates whether the device is awake or asleep or somewhere in between.
     // This is distinct from the screen power state, which is managed separately.
@@ -479,6 +479,8 @@ public final class PowerManagerService extends SystemService
 
     // Set of app ids that are temporarily allowed to acquire wakelocks due to high-pri message
     int[] mDeviceIdleTempWhitelist = new int[0];
+
+    private QCNsrmPowerExtension qcNsrmPowExt = new QCNsrmPowerExtension(this);
 
     private final SparseIntArray mUidState = new SparseIntArray();
 
@@ -908,6 +910,7 @@ public final class PowerManagerService extends SystemService
 	        wakeLock.setIsBlocked(blockWakelock);
                 mWakeLocks.add(wakeLock);
                 setWakeLockDisabledStateLocked(wakeLock);
+                qcNsrmPowExt.checkPmsBlockedWakelocks(uid, pid, flags, tag, wakeLock);
                 notifyAcquire = true;
             }
 
@@ -1393,7 +1396,7 @@ public final class PowerManagerService extends SystemService
      * each time something important changes, and ensure that we do it the same
      * way each time.  The point is to gather all of the transition logic here.
      */
-    private void updatePowerStateLocked() {
+    protected void updatePowerStateLocked() {
         if (!mSystemReady || mDirty == 0) {
             return;
         }
@@ -3039,7 +3042,7 @@ public final class PowerManagerService extends SystemService
     /**
      * Represents a wake lock that has been acquired by an application.
      */
-    private final class WakeLock implements IBinder.DeathRecipient {
+    protected final class WakeLock implements IBinder.DeathRecipient {
         public final IBinder mLock;
         public int mFlags;
         public String mTag;
@@ -3723,6 +3726,14 @@ public final class PowerManagerService extends SystemService
             String[] parts = wakeLockTagsString.split("\\|");
             for(int i = 0; i < parts.length; i++){
                 mBlockedWakeLocks.add(parts[i]);
+
+        /* updates the blocked uids, so if a wake lock is acquired for it
+         * can be released.
+         */
+        public void updateBlockedUids(int uid, boolean isBlocked) {
+            synchronized(mLock) {
+                qcNsrmPowExt.processPmsBlockedUid(uid, isBlocked,
+                                                             mWakeLocks);
             }
         }
     }
