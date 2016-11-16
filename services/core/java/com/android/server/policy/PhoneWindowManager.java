@@ -3275,7 +3275,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 || keyCode == KeyEvent.KEYCODE_MENU
                 || keyCode == KeyEvent.KEYCODE_APP_SWITCH)) {
             return -1;
-        ]
+        }
 
         // we only handle events from hardware key devices that originate from
         // real button
